@@ -1,6 +1,4 @@
-﻿Permanent public viewer link:
-https://pagedrop.dev/s/rpLXKfH4/
+Permanent public viewer link:
+https://venusupload01-a11y.github.io/lawyer-diary-app/
 
-This URL stays the same and is updated via scripts:
-- Publish Link Update.bat
-- Start Auto Update Link.bat
+This URL stays the same and updates after each publish push.

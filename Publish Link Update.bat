@@ -1,4 +1,4 @@
 @echo off
 cd /d "%~dp0"
-python scripts\pagedrop_publish.py
+python scripts\github_publish.py
 pause
