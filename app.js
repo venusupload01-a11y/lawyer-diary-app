@@ -555,6 +555,15 @@ const requiredCertifiedCopyEntries = [
   }
 ];
 
+const requiredMainCaseHearings = [
+  {
+    businessDate: "2026-04-27",
+    hearingDate: "2026-05-04",
+    purpose: "Evidence",
+    judge: "7th Joint Civil Judge J.D. and JMFC, Pune"
+  }
+];
+
 const defaultData = {
   profile: {
     role: "Respondent (Husband)",
@@ -1137,8 +1146,8 @@ function normalizeProfile(profile) {
   };
 }
 
-function normalizeHearings(hearings, defaultJudge) {
-  return Array.isArray(hearings)
+function normalizeHearings(hearings, defaultJudge, seedRequired = false) {
+  const incoming = Array.isArray(hearings)
     ? hearings
         .filter((item) => item && item.hearingDate)
         .map((item) => ({
@@ -1148,6 +1157,23 @@ function normalizeHearings(hearings, defaultJudge) {
           judge: item.judge || defaultJudge || "-"
         }))
     : [];
+
+  if (seedRequired) {
+    requiredMainCaseHearings.forEach((required) => {
+      const exists = incoming.some(
+        (item) =>
+          item.hearingDate === required.hearingDate &&
+          item.businessDate === required.businessDate &&
+          (item.purpose || "-") === required.purpose
+      );
+      if (!exists) {
+        incoming.push(structuredClone(required));
+      }
+    });
+  }
+
+  incoming.sort((a, b) => new Date(b.hearingDate) - new Date(a.hearingDate));
+  return incoming;
 }
 
 function normalizeTasks(tasks) {
@@ -1180,7 +1206,7 @@ function migrateState(data, options = {}) {
   const seedRequired = options.seedRequired !== false;
   const migrated = structuredClone(data || {});
   migrated.profile = normalizeProfile(migrated.profile);
-  migrated.hearings = normalizeHearings(migrated.hearings, migrated.profile.judge);
+  migrated.hearings = normalizeHearings(migrated.hearings, migrated.profile.judge, seedRequired);
   migrated.orders = normalizeOrderAttachments(migrated.orders, seedRequired);
   migrated.references = normalizeReferences(migrated.references, seedRequired);
   migrated.maintenancePayments = normalizeMaintenancePayments(migrated.maintenancePayments, seedRequired);
