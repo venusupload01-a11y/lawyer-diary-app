@@ -2,3 +2,5 @@ share-runtime/
 __pycache__/
 *.pyc
 *.log
+tmp-payment-proofs/
+site-deploy.zip
