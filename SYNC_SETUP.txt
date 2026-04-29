@@ -1,0 +1,12 @@
+Record Pull Setup (Both Cases)
+1) Open sync\pull-config.json
+2) Paste eCourts case-details URL for:
+   - case-main (PWDVA JMFC Court)
+   - case-sessions (Session Court - Appeal)
+3) Run: Pull Case Records Now.bat
+4) Keep app open and click "Sync Records" (or wait auto-sync every 2 minutes)
+5) For continuous updates, run: Start Auto Pull Records.bat
+
+Notes:
+- Pulled JSON is saved at sync\latest-case-data.json
+- Raw fetched HTML snapshots are saved at sync\raw\

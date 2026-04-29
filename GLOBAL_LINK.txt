@@ -1,0 +1,7 @@
+Current global tunnel link (generated now):
+https://2e222d53899f24.lhr.life
+
+Important:
+- This is a live tunnel from your computer.
+- Keep tunnel/server running while sharing.
+- Free tunnel URLs can rotate; if it stops, run Start Global Link.bat and use the new URL from share-runtime\global-tunnel.log.

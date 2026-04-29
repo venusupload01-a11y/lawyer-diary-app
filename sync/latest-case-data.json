@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-29T04:50:07Z",
+  "revision": "20260429045007",
+  "cases": {},
+  "errors": [
+    "case-main: Source not found: C:\\Users\\VENUS\\Documents\\New project\\lawyer-diary-app\\PASTE_ECOURTS_CASE_DETAILS_URL_FOR_MAIN_CASE",
+    "case-sessions: Source not found: C:\\Users\\VENUS\\Documents\\New project\\lawyer-diary-app\\PASTE_ECOURTS_CASE_DETAILS_URL_FOR_SESSION_CASE"
+  ]
+}

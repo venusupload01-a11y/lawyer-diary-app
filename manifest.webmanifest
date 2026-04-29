@@ -1,0 +1,10 @@
+{
+  "name": "Lawyer's Diary",
+  "short_name": "LawyerDiary",
+  "description": "Court diary for hearings, orders, references, payments, gifts, exhibits, and certified copies.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4efe6",
+  "theme_color": "#0e6d58"
+}

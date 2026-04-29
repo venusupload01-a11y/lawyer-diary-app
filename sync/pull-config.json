@@ -1,0 +1,16 @@
+{
+  "cases": [
+    {
+      "caseId": "case-main",
+      "name": "PWDVA JMFC Court",
+      "source": "PASTE_ECOURTS_CASE_DETAILS_URL_FOR_MAIN_CASE",
+      "timeoutSec": 45
+    },
+    {
+      "caseId": "case-sessions",
+      "name": "Session Court - Appeal",
+      "source": "PASTE_ECOURTS_CASE_DETAILS_URL_FOR_SESSION_CASE",
+      "timeoutSec": 45
+    }
+  ]
+}

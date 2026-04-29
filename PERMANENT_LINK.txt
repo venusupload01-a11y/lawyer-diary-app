@@ -1,0 +1,6 @@
+﻿Permanent public viewer link:
+https://pagedrop.dev/s/rpLXKfH4/
+
+This URL stays the same and is updated via scripts:
+- Publish Link Update.bat
+- Start Auto Update Link.bat

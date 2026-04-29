@@ -1,0 +1,7 @@
+LAN share link (same Wi-Fi/LAN):
+http://192.168.1.35:8787/index.html
+
+How to use:
+1) Run Start LAN Share Link.bat
+2) Keep that command window open
+3) Share the link above

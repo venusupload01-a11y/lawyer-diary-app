@@ -1,0 +1,6 @@
+Offline local link (after starting Start Offline App.bat):
+http://127.0.0.1:8787/index.html
+
+Notes:
+- Works without internet on this same computer.
+- Both case sessions are available: PWDVA JMFC Court and Session Court - Appeal.

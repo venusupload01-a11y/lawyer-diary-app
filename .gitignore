@@ -1,0 +1,4 @@
+share-runtime/
+__pycache__/
+*.pyc
+*.log
