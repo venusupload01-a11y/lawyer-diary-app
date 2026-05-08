@@ -570,6 +570,15 @@ const requiredMainCaseHearings = [
   }
 ];
 
+const requiredMainCaseNotes = [
+  {
+    id: "n-daily-status-2026-05-04",
+    title: "Daily Status - 04-05-2026",
+    body: "Business: This is E filing case called on today. P.O. is on leave. Applicant advocate is present. Next Purpose: Evidence. Next Hearing Date: 08-05-2026.",
+    createdAt: "2026-05-04T10:00:00.000Z"
+  }
+];
+
 const defaultData = {
   profile: {
     role: "Respondent (Husband)",
@@ -1196,8 +1205,8 @@ function normalizeTasks(tasks) {
     : [];
 }
 
-function normalizeNotes(notes) {
-  return Array.isArray(notes)
+function normalizeNotes(notes, seedRequired = false) {
+  const incoming = Array.isArray(notes)
     ? notes
         .filter((item) => item && item.title && item.body)
         .map((item, index) => ({
@@ -1207,6 +1216,16 @@ function normalizeNotes(notes) {
           createdAt: item.createdAt || new Date().toISOString()
         }))
     : [];
+
+  if (seedRequired) {
+    requiredMainCaseNotes.forEach((required) => {
+      const exists = incoming.some((item) => item.id === required.id);
+      if (!exists) incoming.push(structuredClone(required));
+    });
+  }
+
+  incoming.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  return incoming;
 }
 
 function migrateState(data, options = {}) {
@@ -1221,7 +1240,7 @@ function migrateState(data, options = {}) {
   migrated.exhibits = normalizeExhibits(migrated.exhibits, seedRequired);
   migrated.certifiedCopies = normalizeCertifiedCopies(migrated.certifiedCopies, seedRequired);
   migrated.tasks = normalizeTasks(migrated.tasks);
-  migrated.notes = normalizeNotes(migrated.notes);
+  migrated.notes = normalizeNotes(migrated.notes, seedRequired);
   return migrated;
 }
 
