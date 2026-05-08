@@ -1,5 +1,7 @@
 ﻿const storageKey = "lawyers-diary-data-v1";
 
+const reminderPrefsKey = "lawyers-diary-reminder-prefs-v1";
+const reminderLogKey = "lawyers-diary-reminder-log-v1";
 const MAIN_CASE_ID = "case-main";
 const SESSION_CASE_ID = "case-sessions";
 const MAIN_CASE_NAME = "PWDVA JMFC Court";
@@ -771,6 +773,8 @@ let state = getActiveCaseState();
 const syncRecordsPath = "./sync/latest-case-data.json";
 const syncPollMs = 120000;
 let lastAppliedSyncSignature = "";
+let reminderPrefs = loadReminderPrefs();
+let reminderLog = loadReminderLog();
 
 function normalizeKeyText(value) {
   return String(value || "").trim().toLowerCase();
@@ -1523,6 +1527,147 @@ function daysUntil(dateString) {
   return Math.floor(diffMs / (1000 * 60 * 60 * 24));
 }
 
+function toLocalYmd(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+function loadReminderPrefs() {
+  try {
+    const raw = localStorage.getItem(reminderPrefsKey);
+    if (!raw) return { enabled: false };
+    const parsed = JSON.parse(raw);
+    return { enabled: Boolean(parsed?.enabled) };
+  } catch {
+    return { enabled: false };
+  }
+}
+
+function saveReminderPrefs() {
+  localStorage.setItem(reminderPrefsKey, JSON.stringify(reminderPrefs));
+}
+
+function loadReminderLog() {
+  try {
+    const raw = localStorage.getItem(reminderLogKey);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveReminderLog() {
+  localStorage.setItem(reminderLogKey, JSON.stringify(reminderLog));
+}
+
+function getTodayReminders() {
+  const today = toLocalYmd();
+  const reminders = [];
+
+  (state.hearings || []).forEach((hearing, index) => {
+    if (String(hearing.hearingDate || "") !== today) return;
+    reminders.push({
+      id: `hearing:${hearing.hearingDate}:${hearing.businessDate || index}:${hearing.purpose || "-"}`,
+      type: "hearing",
+      title: "Hearing Due Today",
+      message: `${toIndianDate(hearing.hearingDate)} - ${hearing.purpose || "Hearing"} (${hearing.judge || "-"})`
+    });
+  });
+
+  (state.tasks || []).forEach((task) => {
+    if (task.done) return;
+    if (String(task.dueDate || "") !== today) return;
+    reminders.push({
+      id: `task:${task.id}:${task.dueDate}`,
+      type: "task",
+      title: "Task Due Today",
+      message: `${toIndianDate(task.dueDate)} - ${task.text}`
+    });
+  });
+
+  return reminders;
+}
+
+function getReminderStatusText() {
+  if (!("Notification" in window)) return "Browser notifications are not supported on this device.";
+  if (!reminderPrefs.enabled) return "Browser reminders are off. Click Enable to turn them on.";
+  if (Notification.permission === "granted") return "Browser reminders are enabled.";
+  if (Notification.permission === "denied") return "Browser blocked notifications. Enable notifications in browser settings.";
+  return "Click Enable and allow browser permission to receive reminder popups.";
+}
+
+function renderReminders() {
+  const reminderStatusEl = document.getElementById("reminderStatus");
+  const reminderListEl = document.getElementById("reminderList");
+  const enableBtn = document.getElementById("enableRemindersBtn");
+  if (!reminderStatusEl || !reminderListEl || !enableBtn) return;
+
+  reminderStatusEl.textContent = getReminderStatusText();
+  if ("Notification" in window && reminderPrefs.enabled && Notification.permission === "granted") {
+    enableBtn.textContent = "Reminders Enabled";
+  } else {
+    enableBtn.textContent = "Enable Browser Reminders";
+  }
+
+  const reminders = getTodayReminders();
+  if (!reminders.length) {
+    reminderListEl.innerHTML = '<li class="empty">No reminders due today.</li>';
+    return;
+  }
+
+  reminderListEl.innerHTML = reminders
+    .map((item) => `<li class="reminder-item"><strong>${item.title}:</strong> ${item.message}</li>`)
+    .join("");
+}
+
+async function enableBrowserReminders() {
+  reminderPrefs.enabled = true;
+  saveReminderPrefs();
+
+  if (!("Notification" in window)) {
+    renderReminders();
+    return;
+  }
+
+  if (Notification.permission !== "granted") {
+    try {
+      await Notification.requestPermission();
+    } catch {}
+  }
+  renderReminders();
+  notifyDueItems();
+}
+
+function notifyDueItems() {
+  if (!reminderPrefs.enabled) return;
+  if (!("Notification" in window)) return;
+  if (Notification.permission !== "granted") return;
+
+  const today = toLocalYmd();
+  const activeCaseId = appState?.activeCaseId || "default";
+  const caseName = getActiveCaseRecord()?.name || "Lawyer's Diary";
+  const reminders = getTodayReminders();
+  let changed = false;
+
+  reminders.forEach((item) => {
+    const key = `${today}|${activeCaseId}|${item.id}`;
+    if (reminderLog[key]) return;
+    const notification = new Notification(`${item.title} - ${caseName}`, {
+      body: item.message,
+      tag: key
+    });
+    notification.onclick = () => window.focus();
+    reminderLog[key] = new Date().toISOString();
+    changed = true;
+  });
+
+  if (changed) saveReminderLog();
+}
+
 function renderSummary() {
   const next = getNextHearing();
   const pendingTasks = state.tasks.filter((t) => !t.done).length;
@@ -1876,6 +2021,7 @@ function renderNotes() {
 
 function renderAll() {
   renderSummary();
+  renderReminders();
   renderMeta();
   renderHearings();
   renderOrders();
@@ -2558,6 +2704,9 @@ function bindEvents() {
   document.getElementById("addReferenceBtn").addEventListener("click", addReference);
   document.getElementById("addTaskBtn").addEventListener("click", addTask);
   document.getElementById("addNoteBtn").addEventListener("click", addNote);
+  document.getElementById("enableRemindersBtn").addEventListener("click", () => {
+    enableBrowserReminders();
+  });
 
   document.querySelectorAll(".tab").forEach((tabButton) => {
     tabButton.addEventListener("click", () => {
@@ -2753,10 +2902,15 @@ function init() {
   renderCaseSwitcher();
   save();
   renderAll();
+  notifyDueItems();
   refreshSyncedRecords(false);
   setInterval(() => {
     refreshSyncedRecords(false);
   }, syncPollMs);
+  setInterval(() => {
+    renderReminders();
+    notifyDueItems();
+  }, 60000);
 }
 
 init();

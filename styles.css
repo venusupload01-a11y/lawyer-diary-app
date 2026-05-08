@@ -194,12 +194,43 @@ h2, h3 {
 }
 
 .case-meta,
-.acts-wrap {
+.acts-wrap,
+.reminders-wrap {
   margin-top: 1rem;
   background: var(--bg-soft);
   border: 1px solid var(--line);
   border-radius: 0.8rem;
   padding: 0.7rem;
+}
+
+.reminder-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.reminder-status {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.reminder-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.6rem 0 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.reminder-item {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  padding: 0.55rem;
+  font-size: 0.86rem;
 }
 
 .meta-row {
