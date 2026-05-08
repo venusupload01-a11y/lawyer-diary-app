@@ -557,6 +557,12 @@ const requiredCertifiedCopyEntries = [
 
 const requiredMainCaseHearings = [
   {
+    businessDate: "2026-05-04",
+    hearingDate: "2026-05-08",
+    purpose: "Evidence",
+    judge: "7th Joint Civil Judge J.D. and JMFC, Pune"
+  },
+  {
     businessDate: "2026-04-27",
     hearingDate: "2026-05-04",
     purpose: "Evidence",
@@ -593,6 +599,7 @@ const defaultData = {
     respondentAdvocate: "Varu Kushal Manoj"
   },
   hearings: [
+    { businessDate: "2026-05-04", hearingDate: "2026-05-08", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2026-04-27", hearingDate: "2026-05-04", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2026-03-18", hearingDate: "2026-04-27", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2025-12-20", hearingDate: "2026-03-18", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
