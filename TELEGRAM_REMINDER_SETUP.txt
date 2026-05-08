@@ -1,0 +1,39 @@
+FREE AUTO REMINDERS (TELEGRAM) - SETUP
+
+1) Create Telegram bot:
+   - Open @BotFather in Telegram
+   - Run /newbot and complete bot creation
+   - Copy bot token (looks like 123456:ABC...)
+
+2) Get your chat ID:
+   - Open chat with your bot and send any message (e.g., "start")
+   - Open this URL in browser:
+     https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates
+   - Find message.chat.id in JSON
+   - For personal chat: positive number
+   - For group chat: usually negative number
+
+3) Add GitHub secrets in repository:
+   Repo: https://github.com/venusupload01-a11y/lawyer-diary-app
+   - Settings -> Secrets and variables -> Actions -> New repository secret
+   - Add:
+     TELEGRAM_BOT_TOKEN = <your bot token>
+     TELEGRAM_CHAT_ID    = <single chat id>
+
+   Optional:
+     TELEGRAM_CHAT_IDS   = <id1,id2,id3>   (comma-separated multiple recipients)
+
+4) Run the workflow now (test):
+   - GitHub -> Actions -> "Telegram Reminders" -> Run workflow
+
+5) Automatic schedule:
+   - Runs daily at 09:00 IST (03:30 UTC)
+   - Sends due reminders for:
+     - Today
+     - Tomorrow
+
+Data source:
+- Primary: sync/latest-case-data.json (if case pull is configured)
+- Fallback: sync/reminder-data.json
+
+If you update hearing/task dates manually, keep sync/reminder-data.json updated.

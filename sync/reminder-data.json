@@ -1,0 +1,30 @@
+{
+  "cases": [
+    {
+      "caseId": "case-main",
+      "caseName": "PWDVA JMFC Court",
+      "hearings": [
+        {
+          "businessDate": "2026-05-04",
+          "hearingDate": "2026-05-08",
+          "purpose": "Evidence",
+          "judge": "7th Joint Civil Judge J.D. and JMFC, Pune"
+        }
+      ],
+      "tasks": []
+    },
+    {
+      "caseId": "case-sessions",
+      "caseName": "Session Court - Appeal",
+      "hearings": [
+        {
+          "businessDate": "2026-04-22",
+          "hearingDate": "2026-06-08",
+          "purpose": "Awaiting Notice",
+          "judge": "District Judge-21 and Addl. Sessions Judge Pune"
+        }
+      ],
+      "tasks": []
+    }
+  ]
+}

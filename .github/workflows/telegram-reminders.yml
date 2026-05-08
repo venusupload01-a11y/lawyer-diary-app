@@ -1,0 +1,32 @@
+name: Telegram Reminders
+
+on:
+  schedule:
+    # 03:30 UTC = 09:00 IST
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  send-reminders:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Send Telegram reminders
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # optional: comma-separated chat IDs (overrides TELEGRAM_CHAT_ID if set)
+          TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
+          REMINDER_TIMEZONE: "Asia/Kolkata"
+          # send for today(0) and tomorrow(1)
+          REMINDER_DAYS_AHEAD: "0,1"
+          # set true if you want a daily message even when nothing is due
+          REMINDER_SEND_EMPTY: "false"
+        run: python scripts/send_telegram_reminders.py
