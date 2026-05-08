@@ -560,6 +560,12 @@ const requiredCertifiedCopyEntries = [
 
 const requiredMainCaseHearings = [
   {
+    businessDate: "2026-05-08",
+    hearingDate: "2026-05-15",
+    purpose: "Evidence",
+    judge: "7th Joint Civil Judge J.D. and JMFC, Pune"
+  },
+  {
     businessDate: "2026-05-04",
     hearingDate: "2026-05-08",
     purpose: "Evidence",
@@ -574,6 +580,12 @@ const requiredMainCaseHearings = [
 ];
 
 const requiredMainCaseNotes = [
+  {
+    id: "n-daily-status-2026-05-08",
+    title: "Daily Status - 08-05-2026",
+    body: "Business: This is E filing case called on today. Applicant is absent. His advocate is present. Respondent is absent. Next Purpose: Evidence. Next Hearing Date: 15-05-2026.",
+    createdAt: "2026-05-08T10:00:00.000Z"
+  },
   {
     id: "n-daily-status-2026-05-04",
     title: "Daily Status - 04-05-2026",
@@ -611,6 +623,7 @@ const defaultData = {
     respondentAdvocate: "Varu Kushal Manoj"
   },
   hearings: [
+    { businessDate: "2026-05-08", hearingDate: "2026-05-15", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2026-05-04", hearingDate: "2026-05-08", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2026-04-27", hearingDate: "2026-05-04", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2026-03-18", hearingDate: "2026-04-27", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
