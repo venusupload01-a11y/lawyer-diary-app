@@ -2,6 +2,7 @@
 
 const reminderPrefsKey = "lawyers-diary-reminder-prefs-v1";
 const reminderLogKey = "lawyers-diary-reminder-log-v1";
+const whatsappPrefsKey = "lawyers-diary-whatsapp-prefs-v1";
 const MAIN_CASE_ID = "case-main";
 const SESSION_CASE_ID = "case-sessions";
 const MAIN_CASE_NAME = "PWDVA JMFC Court";
@@ -775,6 +776,7 @@ const syncPollMs = 120000;
 let lastAppliedSyncSignature = "";
 let reminderPrefs = loadReminderPrefs();
 let reminderLog = loadReminderLog();
+let whatsappPrefs = loadWhatsAppPrefs();
 
 function normalizeKeyText(value) {
   return String(value || "").trim().toLowerCase();
@@ -1564,6 +1566,75 @@ function saveReminderLog() {
   localStorage.setItem(reminderLogKey, JSON.stringify(reminderLog));
 }
 
+function loadWhatsAppPrefs() {
+  try {
+    const raw = localStorage.getItem(whatsappPrefsKey);
+    if (!raw) return { phone: "" };
+    const parsed = JSON.parse(raw);
+    return { phone: String(parsed?.phone || "") };
+  } catch {
+    return { phone: "" };
+  }
+}
+
+function saveWhatsAppPrefs() {
+  localStorage.setItem(whatsappPrefsKey, JSON.stringify(whatsappPrefs));
+}
+
+function normalizeWhatsAppPhone(input) {
+  return String(input || "").replace(/[^\d]/g, "");
+}
+
+function setWhatsAppPhoneFromInput() {
+  const input = document.getElementById("whatsappPhone");
+  if (!input) return;
+  whatsappPrefs.phone = normalizeWhatsAppPhone(input.value);
+  saveWhatsAppPrefs();
+  input.value = whatsappPrefs.phone;
+}
+
+function getWhatsAppReminderMessage() {
+  const today = toLocalYmd();
+  const todayDisplay = toIndianDate(today);
+  const caseName = getActiveCaseRecord()?.name || "Case";
+  const reminders = getTodayReminders();
+  const lines = [`Lawyer's Diary Reminder`, `Case: ${caseName}`, `Date: ${todayDisplay}`];
+
+  if (reminders.length) {
+    lines.push("");
+    reminders.forEach((item, index) => {
+      lines.push(`${index + 1}. ${item.title}: ${item.message}`);
+    });
+  } else {
+    lines.push("", "No due reminders for today.");
+  }
+
+  const next = getNextHearing();
+  if (next) {
+    lines.push("", `Next Hearing: ${toIndianDate(next.hearingDate)} | ${next.purpose || "-"}`);
+  }
+  return lines.join("\n");
+}
+
+function shareWhatsAppReminder() {
+  const input = document.getElementById("whatsappPhone");
+  if (input) {
+    whatsappPrefs.phone = normalizeWhatsAppPhone(input.value);
+  }
+
+  if (!whatsappPrefs.phone || whatsappPrefs.phone.length < 10) {
+    alert("Enter a valid WhatsApp number with country code, e.g., 9198XXXXXXXX.");
+    return;
+  }
+
+  saveWhatsAppPrefs();
+  if (input) input.value = whatsappPrefs.phone;
+
+  const text = encodeURIComponent(getWhatsAppReminderMessage());
+  const url = `https://wa.me/${whatsappPrefs.phone}?text=${text}`;
+  window.open(url, "_blank", "noopener");
+}
+
 function getTodayReminders() {
   const today = toLocalYmd();
   const reminders = [];
@@ -1604,7 +1675,12 @@ function renderReminders() {
   const reminderStatusEl = document.getElementById("reminderStatus");
   const reminderListEl = document.getElementById("reminderList");
   const enableBtn = document.getElementById("enableRemindersBtn");
+  const phoneInput = document.getElementById("whatsappPhone");
   if (!reminderStatusEl || !reminderListEl || !enableBtn) return;
+
+  if (phoneInput && document.activeElement !== phoneInput) {
+    phoneInput.value = whatsappPrefs.phone || "";
+  }
 
   reminderStatusEl.textContent = getReminderStatusText();
   if ("Notification" in window && reminderPrefs.enabled && Notification.permission === "granted") {
@@ -2704,6 +2780,15 @@ function bindEvents() {
   document.getElementById("addReferenceBtn").addEventListener("click", addReference);
   document.getElementById("addTaskBtn").addEventListener("click", addTask);
   document.getElementById("addNoteBtn").addEventListener("click", addNote);
+  document.getElementById("shareWhatsAppBtn").addEventListener("click", () => {
+    shareWhatsAppReminder();
+  });
+  document.getElementById("whatsappPhone").addEventListener("change", () => {
+    setWhatsAppPhoneFromInput();
+  });
+  document.getElementById("whatsappPhone").addEventListener("blur", () => {
+    setWhatsAppPhoneFromInput();
+  });
   document.getElementById("enableRemindersBtn").addEventListener("click", () => {
     enableBrowserReminders();
   });

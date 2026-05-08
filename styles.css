@@ -233,6 +233,10 @@ h2, h3 {
   font-size: 0.86rem;
 }
 
+#whatsappPhone {
+  min-width: 220px;
+}
+
 .meta-row {
   display: flex;
   justify-content: space-between;
