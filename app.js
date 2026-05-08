@@ -1449,13 +1449,25 @@ async function refreshSyncedRecords(showAlert = false) {
 
 function toIndianDate(isoDate) {
   if (!isoDate) return "-";
-  const d = new Date(isoDate);
+  const d = parseCalendarDate(isoDate);
   if (Number.isNaN(d.getTime())) return isoDate;
   return new Intl.DateTimeFormat("en-IN", {
     day: "2-digit",
     month: "short",
     year: "numeric"
   }).format(d);
+}
+
+function parseCalendarDate(value) {
+  const raw = String(value || "").trim();
+  const dateOnlyMatch = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (dateOnlyMatch) {
+    const year = Number(dateOnlyMatch[1]);
+    const month = Number(dateOnlyMatch[2]) - 1;
+    const day = Number(dateOnlyMatch[3]);
+    return new Date(year, month, day, 0, 0, 0, 0);
+  }
+  return new Date(raw);
 }
 
 function formatCurrencyINR(amount) {
@@ -1494,18 +1506,21 @@ function renderRowActions(editAttr, editValue, deleteAttr, deleteValue) {
 
 function getNextHearing() {
   const today = new Date();
+  const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
   const futureHearings = state.hearings
-    .map((h) => ({ ...h, dt: new Date(h.hearingDate) }))
-    .filter((h) => !Number.isNaN(h.dt.getTime()) && h.dt >= new Date(today.toDateString()))
+    .map((h) => ({ ...h, dt: parseCalendarDate(h.hearingDate) }))
+    .filter((h) => !Number.isNaN(h.dt.getTime()) && h.dt >= todayStart)
     .sort((a, b) => a.dt - b.dt);
   return futureHearings[0] || null;
 }
 
 function daysUntil(dateString) {
   const now = new Date();
-  const target = new Date(dateString);
-  const diffMs = target - new Date(now.toDateString());
-  return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+  const target = parseCalendarDate(dateString);
+  if (Number.isNaN(target.getTime())) return 0;
+  const diffMs = target - todayStart;
+  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
 }
 
 function renderSummary() {
