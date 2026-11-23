@@ -560,6 +560,12 @@ const requiredCertifiedCopyEntries = [
 
 const requiredMainCaseHearings = [
   {
+    businessDate: "2026-11-03",
+    hearingDate: "2026-11-24",
+    purpose: "Evidence",
+    judge: "4th Joint Civil Judge J.D. and JMFC, Pune"
+  },
+  {
     businessDate: "2026-05-15",
     hearingDate: "2026-05-18",
     purpose: "Evidence",
@@ -586,6 +592,12 @@ const requiredMainCaseHearings = [
 ];
 
 const requiredMainCaseNotes = [
+  {
+    id: "n-case-status-2026-11-24",
+    title: "Case Status - 24-11-2026",
+    body: "eCourts case status update: Next Hearing Date is 24-11-2026, stage Evidence, court 4th Joint Civil Judge J.D. and JMFC Pune.",
+    createdAt: "2026-11-23T10:00:00.000Z"
+  },
   {
     id: "n-case-status-2026-05-18",
     title: "Case Status - 18-05-2026",
@@ -620,7 +632,7 @@ const defaultData = {
     eFilingDate: "2023-12-28",
     firstHearingDate: "2024-01-12",
     currentStage: "Evidence",
-    judge: "7th Joint Civil Judge J.D. and JMFC, Pune",
+    judge: "4th Joint Civil Judge J.D. and JMFC, Pune",
     acts: ["Protection of Women from Domestic Violence Act"],
     sections: ["12", "17", "18", "20", "22", "23"],
     petitioner: ["Priyanka Prashant Jadhav"],
@@ -632,9 +644,10 @@ const defaultData = {
       "Pratibha Ramchandra Jadhav",
       "Surekha Ramchandra Jadhav"
     ],
-    respondentAdvocate: "Varu Kushal Manoj"
+    respondentAdvocate: "Shinde Swati Shriram (Prashant Ramchandra Jadhav); Burande Mithil Madan (other respondents)"
   },
   hearings: [
+    { businessDate: "2026-11-03", hearingDate: "2026-11-24", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2026-05-15", hearingDate: "2026-05-18", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2026-05-08", hearingDate: "2026-05-15", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2026-05-04", hearingDate: "2026-05-08", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
