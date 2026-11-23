@@ -371,6 +371,18 @@ const requiredPaymentEntries = [
     }
   },
   {
+    id: "pay-proof-2026-06-27",
+    date: "2026-06-27",
+    amount: 0,
+    mode: "Proof Link",
+    reference: "-",
+    notes: "Payment details not supplied; proof link recorded as Sr. No. 3",
+    attachment: {
+      label: "Payment Proof - 27 Jun 2026",
+      path: "https://drive.google.com/file/d/1KMQY0w7hKH_5QMODnGdgv_cCT5Q9WVWw/view?usp=drive_link"
+    }
+  },
+  {
     id: "pay-drive-04",
     date: "2025-04-11",
     amount: 15000,
@@ -2044,6 +2056,13 @@ function renderMaintenancePayments() {
   const rows = [...(state.maintenancePayments || [])].sort((a, b) =>
     sortOrder === "asc" ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date)
   );
+  if (sortOrder === "desc") {
+    const requestedThird = rows.find((row) => row.id === "pay-proof-2026-06-27");
+    if (requestedThird) {
+      rows.splice(rows.indexOf(requestedThird), 1);
+      rows.splice(Math.min(2, rows.length), 0, requestedThird);
+    }
+  }
   const totalPaid = rows.reduce((sum, payment) => sum + (Number(payment.amount) || 0), 0);
   if (totalPaidEl) {
     totalPaidEl.textContent = formatCurrencyINR(totalPaid);
