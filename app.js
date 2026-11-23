@@ -127,15 +127,6 @@ const requiredOrderDocuments = [
 
 const requiredReferenceJudgements = [
   {
-    id: "ref-money-order-emg-pnr-153710277544622010",
-    title: "Money Order to Daughter",
-    citation: "EMG PNR: 153710277544622010 | Cnt-1",
-    attachment: {
-      label: "Money Order Proof - Daughter",
-      path: "https://drive.google.com/file/d/1PJPSnLgEGhjx6hy4d7zRV56l5SQFyP0Z/view?usp=drive_link"
-    }
-  },
-  {
     id: "ref-rajnesh-neha",
     title: "Rajnesh v. Neha",
     citation: "Supreme Court of India | Criminal Appeal No. 730 of 2020 | 04 Nov 2020",
@@ -348,7 +339,7 @@ const requiredPaymentEntries = [
     date: "2024-10-30",
     amount: 0,
     mode: "Money Order",
-    reference: "-",
+    reference: "EMG PNR: 153710277544622010 | Cnt-1",
     notes: "Money order for clothes for Diwali; amount not specified",
     attachment: {
       label: "Money Order Proof - Daughter",
@@ -1003,6 +994,7 @@ function normalizeOrderAttachments(orders, seedRequired = true) {
 function normalizeReferences(references, seedRequired = true) {
   const incoming = Array.isArray(references)
     ? references
+        .filter((item) => item && item.id !== "ref-money-order-emg-pnr-153710277544622010")
         .filter((item) => item && item.attachment && item.attachment.path)
         .map((item, index) => ({
           id: item.id || `ref-${Date.now()}-${index}`,
@@ -1067,6 +1059,14 @@ function normalizeMaintenancePayments(payments, seedRequired = true) {
 
       // Keep seeded payment proof dates consistent across older saved backups.
       existing.date = required.date;
+      if (required.id === "pay-money-order-daughter-2024-10-30") {
+        existing.amount = required.amount;
+        existing.mode = required.mode;
+        existing.reference = required.reference;
+        existing.notes = required.notes;
+        existing.attachment = structuredClone(required.attachment);
+        return;
+      }
       if (required.id.startsWith("pay-proof-2026-")) {
         existing.amount = required.amount;
         existing.mode = required.mode;
