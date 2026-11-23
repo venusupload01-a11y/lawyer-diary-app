@@ -335,6 +335,18 @@ const requiredExhibitEntries = [
 
 const requiredPaymentEntries = [
   {
+    id: "pay-money-order-daughter-2024-10-30",
+    date: "2024-10-30",
+    amount: 0,
+    mode: "Money Order",
+    reference: "-",
+    notes: "Money order for clothes for Diwali; amount not specified",
+    attachment: {
+      label: "Money Order Proof - Daughter",
+      path: "https://drive.google.com/file/d/1PJPSnLgEGhjx6hy4d7zRV56l5SQFyP0Z/view?usp=drive_link"
+    }
+  },
+  {
     id: "pay-proof-2026-11-03",
     date: "2026-11-03",
     amount: 18000,
@@ -448,13 +460,13 @@ const requiredDaughterGiftEntries = [
   {
     id: "gift-image-01",
     date: "2024-10-30",
-    item: "Clothes for Diwali",
+    item: "Diwali Gift Parcel",
     amount: 0,
     occasion: "Diwali 2024",
-    notes: "Money order to daughter; amount not specified",
+    notes: "Gift sent to daughter - image proof attached",
     attachment: {
-      label: "Money Order Proof - Clothes for Diwali",
-      path: "https://drive.google.com/file/d/14ck3xAYb9ESDVZdo3oajQTjr18SwVaoV/view?usp=drive_link"
+      label: "IMG_20241030_114205.jpg",
+      path: "gift-images/IMG_20241030_114205.jpg"
     }
   }
 ];
@@ -1117,10 +1129,12 @@ function normalizeDaughterGifts(gifts, seedRequired = true) {
       }
 
       existing.date = required.date;
-      existing.item = required.item;
-      existing.occasion = required.occasion;
-      existing.notes = required.notes;
-      existing.attachment = structuredClone(required.attachment);
+      if (existing.item === "Clothes for Diwali") existing.item = required.item;
+      if (existing.occasion === "Diwali 2024") existing.occasion = required.occasion;
+      if (existing.notes === "Money order to daughter; amount not specified") existing.notes = required.notes;
+      if (existing.attachment?.path?.includes("14ck3xAYb9ESDVZdo3oajQTjr18SwVaoV")) {
+        existing.attachment = structuredClone(required.attachment);
+      }
     });
   }
 
