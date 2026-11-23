@@ -335,6 +335,24 @@ const requiredExhibitEntries = [
 
 const requiredPaymentEntries = [
   {
+    id: "pay-proof-2026-11-03",
+    date: "2026-11-03",
+    amount: 18000,
+    mode: "PhonePe",
+    reference: "T2611031156578404679968",
+    notes: "PhonePe",
+    attachment: null
+  },
+  {
+    id: "pay-proof-2026-09-09",
+    date: "2026-09-09",
+    amount: 30000,
+    mode: "PhonePe",
+    reference: "T2609091356315587629999",
+    notes: "PhonePe",
+    attachment: null
+  },
+  {
     id: "pay-drive-01",
     date: "2024-03-16",
     amount: 15000,
@@ -373,10 +391,10 @@ const requiredPaymentEntries = [
   {
     id: "pay-proof-2026-06-27",
     date: "2026-06-27",
-    amount: 0,
-    mode: "Proof Link",
-    reference: "-",
-    notes: "Payment details not supplied; proof link recorded as Sr. No. 3",
+    amount: 60000,
+    mode: "IMPS",
+    reference: "MMT/IMPS/617815681474/PRIPANKAJ/KKBK0001986",
+    notes: "BANK TRANSFER",
     attachment: {
       label: "Payment Proof - 27 Jun 2026",
       path: "https://drive.google.com/file/d/1KMQY0w7hKH_5QMODnGdgv_cCT5Q9WVWw/view?usp=drive_link"
@@ -1022,6 +1040,14 @@ function normalizeMaintenancePayments(payments, seedRequired = true) {
 
       // Keep seeded payment proof dates consistent across older saved backups.
       existing.date = required.date;
+      if (required.id.startsWith("pay-proof-2026-")) {
+        existing.amount = required.amount;
+        existing.mode = required.mode;
+        existing.reference = required.reference;
+        existing.notes = required.notes;
+        existing.attachment = required.attachment ? structuredClone(required.attachment) : null;
+        return;
+      }
       if (Number(existing.amount) === 0 && Number(required.amount) > 0) {
         existing.amount = required.amount;
       }
