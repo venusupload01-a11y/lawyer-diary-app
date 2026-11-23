@@ -565,29 +565,41 @@ const requiredMainCaseHearings = [
     purpose: "Evidence",
     judge: "4th Joint Civil Judge J.D. and JMFC, Pune"
   },
+  { businessDate: "2026-10-12", hearingDate: "2026-11-03", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+  { businessDate: "2026-10-05", hearingDate: "2026-10-12", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+  { businessDate: "2026-09-09", hearingDate: "2026-10-05", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+  { businessDate: "2026-09-02", hearingDate: "2026-09-09", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+  { businessDate: "2026-08-20", hearingDate: "2026-09-02", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+  { businessDate: "2026-07-29", hearingDate: "2026-08-20", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+  { businessDate: "2026-07-10", hearingDate: "2026-07-29", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+  { businessDate: "2026-06-30", hearingDate: "2026-07-10", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+  { businessDate: "2026-06-29", hearingDate: "2026-06-30", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+  { businessDate: "2026-06-18", hearingDate: "2026-06-29", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+  { businessDate: "2026-06-03", hearingDate: "2026-06-18", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+  { businessDate: "2026-05-18", hearingDate: "2026-06-03", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
   {
     businessDate: "2026-05-15",
     hearingDate: "2026-05-18",
     purpose: "Evidence",
-    judge: "7th Joint Civil Judge J.D. and JMFC, Pune"
+    judge: "4th Joint Civil Judge J.D. and JMFC, Pune"
   },
   {
     businessDate: "2026-05-08",
     hearingDate: "2026-05-15",
     purpose: "Evidence",
-    judge: "7th Joint Civil Judge J.D. and JMFC, Pune"
+    judge: "4th Joint Civil Judge J.D. and JMFC, Pune"
   },
   {
     businessDate: "2026-05-04",
     hearingDate: "2026-05-08",
     purpose: "Evidence",
-    judge: "7th Joint Civil Judge J.D. and JMFC, Pune"
+    judge: "4th Joint Civil Judge J.D. and JMFC, Pune"
   },
   {
     businessDate: "2026-04-27",
     hearingDate: "2026-05-04",
     purpose: "Evidence",
-    judge: "7th Joint Civil Judge J.D. and JMFC, Pune"
+    judge: "4th Joint Civil Judge J.D. and JMFC, Pune"
   }
 ];
 
@@ -601,7 +613,7 @@ const requiredMainCaseNotes = [
   {
     id: "n-case-status-2026-05-18",
     title: "Case Status - 18-05-2026",
-    body: "eCourts case status update: Next Hearing Date is 18-05-2026, stage Evidence, court 7th Joint Civil Judge J.D. and JMFC Pune.",
+    body: "eCourts case status update: Next Hearing Date was 18-05-2026, stage Evidence, court 4th Joint Civil Judge J.D. and JMFC Pune.",
     createdAt: "2026-05-18T10:00:00.000Z"
   },
   {
@@ -648,10 +660,22 @@ const defaultData = {
   },
   hearings: [
     { businessDate: "2026-11-03", hearingDate: "2026-11-24", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
-    { businessDate: "2026-05-15", hearingDate: "2026-05-18", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
-    { businessDate: "2026-05-08", hearingDate: "2026-05-15", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
-    { businessDate: "2026-05-04", hearingDate: "2026-05-08", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
-    { businessDate: "2026-04-27", hearingDate: "2026-05-04", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-10-12", hearingDate: "2026-11-03", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-10-05", hearingDate: "2026-10-12", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-09-09", hearingDate: "2026-10-05", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-09-02", hearingDate: "2026-09-09", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-08-20", hearingDate: "2026-09-02", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-07-29", hearingDate: "2026-08-20", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-07-10", hearingDate: "2026-07-29", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-06-30", hearingDate: "2026-07-10", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-06-29", hearingDate: "2026-06-30", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-06-18", hearingDate: "2026-06-29", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-06-03", hearingDate: "2026-06-18", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-05-18", hearingDate: "2026-06-03", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-05-15", hearingDate: "2026-05-18", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-05-08", hearingDate: "2026-05-15", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-05-04", hearingDate: "2026-05-08", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
+    { businessDate: "2026-04-27", hearingDate: "2026-05-04", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2026-03-18", hearingDate: "2026-04-27", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2025-12-20", hearingDate: "2026-03-18", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2025-11-13", hearingDate: "2025-12-20", purpose: "Evidence", judge: "7th Joint Civil Judge J.D. and JMFC, Pune" },
