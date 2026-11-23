@@ -448,13 +448,13 @@ const requiredDaughterGiftEntries = [
   {
     id: "gift-image-01",
     date: "2024-10-30",
-    item: "Diwali Gift Parcel",
+    item: "Clothes for Diwali",
     amount: 0,
     occasion: "Diwali 2024",
-    notes: "Gift sent to daughter - image proof attached",
+    notes: "Money order to daughter; amount not specified",
     attachment: {
-      label: "IMG_20241030_114205.jpg",
-      path: "gift-images/IMG_20241030_114205.jpg"
+      label: "Money Order Proof - Clothes for Diwali",
+      path: "https://drive.google.com/file/d/14ck3xAYb9ESDVZdo3oajQTjr18SwVaoV/view?usp=drive_link"
     }
   }
 ];
@@ -1110,8 +1110,17 @@ function normalizeDaughterGifts(gifts, seedRequired = true) {
 
   if (seedRequired) {
     requiredDaughterGiftEntries.forEach((required) => {
-      const exists = incoming.some((item) => item.id === required.id);
-      if (!exists) incoming.push(structuredClone(required));
+      const existing = incoming.find((item) => item.id === required.id);
+      if (!existing) {
+        incoming.push(structuredClone(required));
+        return;
+      }
+
+      existing.date = required.date;
+      existing.item = required.item;
+      existing.occasion = required.occasion;
+      existing.notes = required.notes;
+      existing.attachment = structuredClone(required.attachment);
     });
   }
 
