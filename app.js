@@ -340,7 +340,7 @@ const requiredPaymentEntries = [
     amount: 3000,
     mode: "Money Order",
     reference: "EMG PNR: 153710277544622010 | Cnt-1",
-    notes: "Money order for clothes for Diwali",
+    notes: "Money order for books for Diwali",
     attachment: {
       label: "Money Order Proof - Daughter",
       path: "https://drive.google.com/file/d/1PJPSnLgEGhjx6hy4d7zRV56l5SQFyP0Z/view?usp=drive_link"
