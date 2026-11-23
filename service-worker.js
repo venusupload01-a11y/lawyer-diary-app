@@ -1,4 +1,4 @@
-const CACHE_VERSION = "lawyer-diary-v7";
+const CACHE_VERSION = "lawyer-diary-v8";
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const CORE_ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.webmanifest"];
