@@ -341,7 +341,10 @@ const requiredPaymentEntries = [
     mode: "PhonePe",
     reference: "T2611031156578404679968",
     notes: "PhonePe",
-    attachment: null
+    attachment: {
+      label: "Payment Proof - 03 Nov 2026",
+      path: "https://drive.google.com/file/d/1gQmHj2f31MW-7nFv9i0TrLuuvNpWIOML/view?usp=drive_link"
+    }
   },
   {
     id: "pay-proof-2026-09-09",
@@ -350,7 +353,10 @@ const requiredPaymentEntries = [
     mode: "PhonePe",
     reference: "T2609091356315587629999",
     notes: "PhonePe",
-    attachment: null
+    attachment: {
+      label: "Payment Proof - 09 Sep 2026",
+      path: "https://drive.google.com/file/d/1aU3CNlbbbEjgVvsrmM0DDyJTrdjScpDl/view?usp=drive_link"
+    }
   },
   {
     id: "pay-drive-01",
