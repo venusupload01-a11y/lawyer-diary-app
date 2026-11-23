@@ -23,14 +23,14 @@ function createSessionCaseData() {
       registrationDate: "2025-12-17",
       eFilingDate: "2025-12-15",
       firstHearingDate: "2025-12-19",
-      currentStage: "Awaiting Notice",
+      currentStage: "Filing of Say on Exh__ Unready",
       judge: "DISTRICT JUDGE-21 AND ADDL. SESSIONS JUDGE PUNE",
       acts: ["Limitation Act"],
       sections: ["5"],
       petitioner: ["Prashant Ramchandra Jadhav"],
-      petitionerAdvocate: "Thombare Ravishankar Bibishanrao",
-      respondents: ["Priyanka Prashant Jadhav", "Palak Prashant Jadhav", "The State of Maharashtra"],
-      respondentAdvocate: "-"
+      petitionerAdvocate: "Pawar Anilkumar Uttamrao",
+      respondents: ["Priyanka Prashant Jadhav etc.", "Palak Prashant Jadhav", "The State of Maharashtra"],
+      respondentAdvocate: "Shikh Amjad Sultan; Sayed Munawar Mehboob"
     },
     hearings: [
       {
@@ -614,6 +614,29 @@ const requiredMainCaseHearings = [
     judge: "4th Joint Civil Judge J.D. and JMFC, Pune"
   }
 ];
+
+const requiredSessionCaseHearings = [
+  { businessDate: "2026-11-21", hearingDate: "2026-12-11", purpose: "Filing of Say on Exh__ Unready", judge: "DISTRICT JUDGE-21 AND ADDL. SESSIONS JUDGE PUNE" },
+  { businessDate: "2026-10-09", hearingDate: "2026-11-21", purpose: "Filing of Say on Exh__ Unready", judge: "DISTRICT JUDGE-20 AND ADDL. SESSIONS JUDGE PUNE" },
+  { businessDate: "2026-08-31", hearingDate: "2026-10-09", purpose: "Filing of Say on Exh__ Unready", judge: "DISTRICT JUDGE-20 AND ADDL. SESSIONS JUDGE PUNE" },
+  { businessDate: "2026-08-18", hearingDate: "2026-08-31", purpose: "Filing of Say on Exh__ Unready", judge: "DISTRICT JUDGE-20 AND ADDL. SESSIONS JUDGE PUNE" },
+  { businessDate: "2026-08-12", hearingDate: "2026-08-18", purpose: "Filing of Say on Exh__ Unready", judge: "DISTRICT JUDGE-20 AND ADDL. SESSIONS JUDGE PUNE" },
+  { businessDate: "2026-07-24", hearingDate: "2026-08-12", purpose: "Filing of Say on Exh__ Unready", judge: "DISTRICT JUDGE-20 AND ADDL. SESSIONS JUDGE PUNE" },
+  { businessDate: "2026-06-18", hearingDate: "2026-07-24", purpose: "Filing of Say on Exh__ Unready", judge: "DISTRICT JUDGE-20 AND ADDL. SESSIONS JUDGE PUNE" },
+  { businessDate: "2026-06-08", hearingDate: "2026-06-18", purpose: "Filing of Say on Exh__ Unready", judge: "DISTRICT JUDGE-27 AND ADDL. SESSIONS JUDGE PUNE" },
+  { businessDate: "2026-04-22", hearingDate: "2026-06-08", purpose: "Awaiting Notice", judge: "DISTRICT JUDGE-27 AND ADDL. SESSIONS JUDGE PUNE" },
+  { businessDate: "2026-04-08", hearingDate: "2026-04-22", purpose: "Awaiting Notice", judge: "DISTRICT JUDGE-27 AND ADDL. SESSIONS JUDGE PUNE" },
+  { businessDate: "2026-03-10", hearingDate: "2026-04-08", purpose: "Awaiting Notice", judge: "DISTRICT JUDGE-27 AND ADDL. SESSIONS JUDGE PUNE" },
+  { businessDate: "2026-01-30", hearingDate: "2026-03-10", purpose: "Awaiting Notice", judge: "DISTRICT JUDGE-23 AND ADDL. SESSIONS JUDGE PUNE" },
+  { businessDate: "2025-12-19", hearingDate: "2026-01-30", purpose: "Awaiting Notice", judge: "DISTRICT JUDGE-23 AND ADDL. SESSIONS JUDGE PUNE" }
+];
+
+const requiredSessionCaseNotes = [{
+  id: "n-session-status-2026-12-11",
+  title: "Session Court Status - 11-12-2026",
+  body: "eCourts update: Next Hearing Date 11-12-2026; stage Filing of Say on Exh__ Unready; District Judge-21 and Addl. Sessions Judge Pune.",
+  createdAt: "2026-11-23T10:00:00.000Z"
+}];
 
 const requiredMainCaseNotes = [
   {
@@ -1243,7 +1266,7 @@ function normalizeProfile(profile) {
   };
 }
 
-function normalizeHearings(hearings, defaultJudge, seedRequired = false) {
+function normalizeHearings(hearings, defaultJudge, seedRequired = false, caseId = MAIN_CASE_ID) {
   const incoming = Array.isArray(hearings)
     ? hearings
         .filter((item) => item && item.hearingDate)
@@ -1255,8 +1278,11 @@ function normalizeHearings(hearings, defaultJudge, seedRequired = false) {
         }))
     : [];
 
-  if (seedRequired) {
-    requiredMainCaseHearings.forEach((required) => {
+  const requiredHearings = caseId === SESSION_CASE_ID
+    ? requiredSessionCaseHearings
+    : seedRequired ? requiredMainCaseHearings : [];
+  if (requiredHearings.length) {
+    requiredHearings.forEach((required) => {
       const exists = incoming.some(
         (item) =>
           item.hearingDate === required.hearingDate &&
@@ -1313,7 +1339,7 @@ function migrateState(data, options = {}) {
   const seedRequired = options.seedRequired !== false;
   const migrated = structuredClone(data || {});
   migrated.profile = normalizeProfile(migrated.profile);
-  migrated.hearings = normalizeHearings(migrated.hearings, migrated.profile.judge, seedRequired);
+  migrated.hearings = normalizeHearings(migrated.hearings, migrated.profile.judge, seedRequired, options.caseId);
   migrated.orders = normalizeOrderAttachments(migrated.orders, seedRequired);
   migrated.references = normalizeReferences(migrated.references, seedRequired);
   migrated.maintenancePayments = normalizeMaintenancePayments(migrated.maintenancePayments, seedRequired);
@@ -1322,6 +1348,19 @@ function migrateState(data, options = {}) {
   migrated.certifiedCopies = normalizeCertifiedCopies(migrated.certifiedCopies, seedRequired);
   migrated.tasks = normalizeTasks(migrated.tasks);
   migrated.notes = normalizeNotes(migrated.notes, seedRequired);
+  if (options.caseId === SESSION_CASE_ID) {
+    migrated.profile = {
+      ...migrated.profile,
+      currentStage: "Filing of Say on Exh__ Unready",
+      judge: "DISTRICT JUDGE-21 AND ADDL. SESSIONS JUDGE PUNE",
+      petitionerAdvocate: "Pawar Anilkumar Uttamrao",
+      respondents: ["Priyanka Prashant Jadhav etc.", "Palak Prashant Jadhav", "The State of Maharashtra"],
+      respondentAdvocate: "Shikh Amjad Sultan; Sayed Munawar Mehboob"
+    };
+    requiredSessionCaseNotes.forEach((note) => {
+      if (!migrated.notes.some((item) => item.id === note.id)) migrated.notes.push(structuredClone(note));
+    });
+  }
   return migrated;
 }
 
@@ -1337,7 +1376,7 @@ function getDefaultCases() {
       id: SESSION_CASE_ID,
       name: SESSION_CASE_NAME,
       seedRequired: false,
-      data: migrateState(createSessionCaseData(), { seedRequired: false })
+      data: migrateState(createSessionCaseData(), { seedRequired: false, caseId: SESSION_CASE_ID })
     }
   };
 }
@@ -1361,7 +1400,7 @@ function migrateAppState(raw) {
         id: safeId,
         name,
         seedRequired,
-        data: migrateState(sourceData, { seedRequired })
+        data: migrateState(sourceData, { seedRequired, caseId: safeId })
       };
     });
     if (!migratedCases[MAIN_CASE_ID]) migratedCases[MAIN_CASE_ID] = defaults[MAIN_CASE_ID];
