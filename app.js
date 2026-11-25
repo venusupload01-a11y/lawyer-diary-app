@@ -5,8 +5,10 @@ const reminderLogKey = "lawyers-diary-reminder-log-v1";
 const whatsappPrefsKey = "lawyers-diary-whatsapp-prefs-v1";
 const MAIN_CASE_ID = "case-main";
 const SESSION_CASE_ID = "case-sessions";
+const RCC_CASE_ID = "case-rcc-1075-2023";
 const MAIN_CASE_NAME = "PWDVA JMFC Court";
 const SESSION_CASE_NAME = "Session Court - Appeal";
+const RCC_CASE_NAME = "RCC 1075/2023 - Bhosari FIR 795/2022";
 const APP_STATE_VERSION = 2;
 
 function createSessionCaseData() {
@@ -77,6 +79,88 @@ function createSessionCaseData() {
         title: "Session Court - Appeal case added",
         body: "Separate sessions court case created to keep records isolated from the existing case.",
         createdAt: new Date().toISOString()
+      }
+    ]
+  };
+}
+
+function createRccCaseData() {
+  const judgeSixth = "6th Jt. CIVIL JUDGE JD AND JMFC PIMPARI";
+  const judgeFifth = "5th Jt. CIVIL JUDGE JD AND JMFC PIMPARI";
+  const judgeCivil = "CIVIL JUDGE J. D. and J.M.F.C. PIMPRI";
+  const hearingRows = [
+    ["2026-11-07", "2027-01-13", "Awaiting Summons", judgeSixth],
+    ["2026-08-25", "2026-11-07", "Awaiting Summons", judgeSixth],
+    ["2026-05-11", "2026-08-25", "Awaiting Summons", judgeFifth],
+    ["2026-01-27", "2026-05-11", "Awaiting Summons", judgeFifth],
+    ["2025-11-20", "2026-01-27", "Awaiting Summons", "-"],
+    ["2025-10-16", "2025-11-20", "Awaiting Summons", "-"],
+    ["2025-08-05", "2025-10-16", "Awaiting Summons", "-"],
+    ["2025-05-29", "2025-08-05", "Awaiting Summons", judgeSixth],
+    ["2025-03-18", "2025-05-29", "Awaiting Summons", judgeSixth],
+    ["2025-01-27", "2025-03-18", "Awaiting Summons", judgeSixth],
+    ["2024-11-29", "2025-01-27", "Awaiting Summons", judgeSixth],
+    ["2024-09-23", "2024-11-29", "Awaiting Summons", judgeSixth],
+    ["2024-08-01", "2024-09-23", "Awaiting Summons", judgeSixth],
+    ["2024-06-28", "2024-08-01", "Awaiting Summons", judgeSixth],
+    ["2024-04-18", "2024-06-28", "Awaiting Summons", judgeFifth],
+    ["2023-12-20", "2024-04-18", "Unready Board", judgeCivil],
+    ["2023-09-20", "2023-12-20", "Unready Board", judgeCivil],
+    ["2023-07-19", "2023-09-20", "Unready Board", judgeCivil],
+    ["2023-04-19", "2023-07-19", "Unready Board", judgeCivil],
+    ["2023-03-13", "2023-04-19", "Unready Board", judgeCivil]
+  ];
+
+  return {
+    profile: {
+      role: "Respondent",
+      court: "Civil Court, Pimpri",
+      caseType: "R.C.C. - Regular Criminal Case",
+      filingNumber: "1075/2023",
+      registrationNumber: "285/2023",
+      cnrNumber: "MHPU090011772023",
+      eFilingNumber: "-",
+      filingDate: "2023-02-22",
+      registrationDate: "2023-03-06",
+      eFilingDate: "",
+      firstHearingDate: "2023-03-13",
+      currentStage: "Awaiting Summons",
+      judge: `8-${judgeSixth}`,
+      acts: ["Indian Penal Code"],
+      sections: ["498(A)", "323", "504", "506"],
+      petitioner: ["State of Maharashtra"],
+      petitionerAdvocate: "APP",
+      respondents: ["Prashant Jadhav"],
+      respondentAdvocate: "-"
+    },
+    hearings: hearingRows.map(([businessDate, hearingDate, purpose, judge]) => ({
+      businessDate, hearingDate, purpose, judge
+    })),
+    orders: [],
+    exhibits: [],
+    certifiedCopies: [],
+    references: [],
+    maintenancePayments: [],
+    daughterGifts: [],
+    tasks: [],
+    notes: [
+      {
+        id: "rcc-records-fir-795-2022",
+        title: "FIR Details",
+        body: "Police Station: Bhosari Police Station, Bhosari | FIR No.: 795 | Year: 2022",
+        createdAt: "2026-11-25T00:00:00.000Z"
+      },
+      {
+        id: "rcc-records-processes",
+        title: "Process Records",
+        body: "PMHPU090011772023_1_1 | Process title: [] | Date: 23-09-2024\nPMHPU090011772023_2_1 | Summons to an accused person [Sec. 61] | Date: 21-10-2026",
+        createdAt: "2026-11-25T00:00:00.000Z"
+      },
+      {
+        id: "rcc-records-transfer",
+        title: "Case Transfer Details",
+        body: "Registration No.: 285/2023 | Transfer Date: 01-03-2024 | From: Court 2 - Civil Judge J.D. and J.M.F.C., Pimpri | To: Court 8 - 5th Joint Civil Judge J.D. and JMFC, Pimpari",
+        createdAt: "2026-11-25T00:00:00.000Z"
       }
     ]
   };
@@ -1448,6 +1532,12 @@ function getDefaultCases() {
       name: SESSION_CASE_NAME,
       seedRequired: false,
       data: migrateState(createSessionCaseData(), { seedRequired: false, caseId: SESSION_CASE_ID })
+    },
+    [RCC_CASE_ID]: {
+      id: RCC_CASE_ID,
+      name: RCC_CASE_NAME,
+      seedRequired: false,
+      data: migrateState(createRccCaseData(), { seedRequired: false, caseId: RCC_CASE_ID })
     }
   };
 }
@@ -1465,7 +1555,9 @@ function migrateAppState(raw) {
           ? MAIN_CASE_NAME
           : safeId === SESSION_CASE_ID
             ? SESSION_CASE_NAME
-            : caseEntry.name || `Case ${index + 1}`;
+            : safeId === RCC_CASE_ID
+              ? RCC_CASE_NAME
+              : caseEntry.name || `Case ${index + 1}`;
       const sourceData = caseEntry.data && caseEntry.data.profile ? caseEntry.data : caseEntry;
       migratedCases[safeId] = {
         id: safeId,
@@ -1476,6 +1568,7 @@ function migrateAppState(raw) {
     });
     if (!migratedCases[MAIN_CASE_ID]) migratedCases[MAIN_CASE_ID] = defaults[MAIN_CASE_ID];
     if (!migratedCases[SESSION_CASE_ID]) migratedCases[SESSION_CASE_ID] = defaults[SESSION_CASE_ID];
+    if (!migratedCases[RCC_CASE_ID]) migratedCases[RCC_CASE_ID] = defaults[RCC_CASE_ID];
     const activeCaseId = migratedCases[raw.activeCaseId] ? raw.activeCaseId : MAIN_CASE_ID;
     return { version: APP_STATE_VERSION, activeCaseId, cases: migratedCases };
   }
@@ -1491,7 +1584,8 @@ function migrateAppState(raw) {
         seedRequired: true,
         data: migrateState(legacyData, { seedRequired: true })
       },
-      [SESSION_CASE_ID]: defaults[SESSION_CASE_ID]
+      [SESSION_CASE_ID]: defaults[SESSION_CASE_ID],
+      [RCC_CASE_ID]: defaults[RCC_CASE_ID]
     }
   };
 }
