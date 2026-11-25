@@ -608,6 +608,12 @@ const requiredCertifiedCopyEntries = [
 
 const requiredMainCaseHearings = [
   {
+    businessDate: "2026-11-24",
+    hearingDate: "2026-12-10",
+    purpose: "Evidence",
+    judge: "4th Joint Civil Judge J.D. and JMFC, Pune"
+  },
+  {
     businessDate: "2026-11-03",
     hearingDate: "2026-11-24",
     purpose: "Evidence",
@@ -730,6 +736,7 @@ const defaultData = {
     respondentAdvocate: "Shinde Swati Shriram (Prashant Ramchandra Jadhav); Burande Mithil Madan (other respondents)"
   },
   hearings: [
+    { businessDate: "2026-11-24", hearingDate: "2026-12-10", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2026-11-03", hearingDate: "2026-11-24", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2026-10-12", hearingDate: "2026-11-03", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
     { businessDate: "2026-10-05", hearingDate: "2026-10-12", purpose: "Evidence", judge: "4th Joint Civil Judge J.D. and JMFC, Pune" },
